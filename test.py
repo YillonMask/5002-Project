@@ -53,5 +53,17 @@ for tokens in spam_emails:
     else:
         FALSE_NEGTIVE += 1
 
-print(TRUE_POSITIVE, TRUE_NEGTIVE, FALSE_POSITIVE, FALSE_NEGTIVE)
+print(
+f'''
+----------------------------------------------------------------
+                            |               ACTUAL
+                            -------------------------------------
+                            |  Positive(spam)   Negtive(regular)
+-----------------------------------------------------------------
+        |   Positive(spam)  |        {TRUE_POSITIVE}             {FALSE_POSITIVE}
+PREDICT | ------------------|------------------------------------
+        |  Negtive(regular) |        {FALSE_NEGTIVE}            {TRUE_NEGTIVE}
+-----------------------------------------------------------------
+'''
+)
 print('the accuracy of the model is:', (TRUE_POSITIVE + TRUE_NEGTIVE) / (TRUE_POSITIVE + TRUE_NEGTIVE + FALSE_POSITIVE + FALSE_NEGTIVE))

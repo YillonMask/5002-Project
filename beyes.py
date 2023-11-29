@@ -41,9 +41,9 @@ def beye_train():
         word_freq_array = uci_spambase.data.features[title].values
         for freq in word_freq_array:
             if title not in word_prob_dict:
-                word_prob_dict[title] = freq / (spam_letter_counter + regular_letter_counter)
+                word_prob_dict[title.split('_')[-1]] = freq / (spam_letter_counter + regular_letter_counter)
             else:
-                word_prob_dict[title] += freq / (spam_letter_counter + regular_letter_counter)
+                word_prob_dict[title.split('_')[-1]] += freq / (spam_letter_counter + regular_letter_counter)
 
     print('\nthe word_prob_dict is:', word_prob_dict)
 
@@ -56,14 +56,14 @@ def beye_train():
             # add label '_regular' and '_spam' to classify the frequency
             if targets[index] == 0:
                 if title + '_regular' in word_freq_dict:
-                    word_freq_dict[title + '_regular'] += freq
+                    word_freq_dict[title.split('_')[-1] + '_regular'] += freq
                 else:
-                    word_freq_dict[title + '_regular'] = freq
+                    word_freq_dict[title.split('_')[-1] + '_regular'] = freq
             elif targets[index] == 1:
                 if title + '_spam' in word_freq_dict:
-                    word_freq_dict[title + '_spam'] += freq
+                    word_freq_dict[title.split('_')[-1] + '_spam'] += freq
                 else:
-                    word_freq_dict[title + '_spam'] = freq
+                    word_freq_dict[title.split('_')[-1] + '_spam'] = freq
 
     print('\nthe dict record the fequency of each word in spam or regular letter:', word_freq_dict)
 
@@ -72,9 +72,9 @@ def beye_train():
     word_conditional_prob_dict = {}
 
     for key, value in word_freq_dict.items():
-        if key.split('_')[3] == 'spam':
+        if key.split('_')[-1] == 'spam':
             word_conditional_prob_dict[key] = value / spam_letter_counter
-        if key.split('_')[3] == 'regular':
+        if key.split('_')[-1] == 'regular':
             word_conditional_prob_dict[key] = value / regular_letter_counter
 
     print('\nthe word_conditional_prob_dict is:', word_conditional_prob_dict)
@@ -88,7 +88,7 @@ def beye_train():
     letter_conditional_prob_dict = {}
 
     for key, value in word_conditional_prob_dict.items():
-        letter_conditional_prob_dict[key] = value * prob_spam / word_prob_dict[key.split('_')[0] + '_' + key.split('_')[1] + '_' + key.split('_')[2]]
+        letter_conditional_prob_dict[key] = value * prob_spam / word_prob_dict[key.split('_')[0]]
 
     print('\nthe letter_conditional_prob_dict is:', letter_conditional_prob_dict)
 
@@ -103,8 +103,7 @@ def beyes_test(word_prob_dict, letter_conditional_prob_dict, content_tokens):
     prob_regular = 0
 
     for token in content_tokens:
-        key = 'word_freq_' + token
-
+        key = token
         if key not in word_prob_dict:
             pass
         else:
