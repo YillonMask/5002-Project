@@ -3,18 +3,11 @@
     Final Project
     Xinrui Yi
 """
-from ucimlrepo import fetch_ucirepo
-import pandas
+import pandas as pd
+import numpy as np
 
 # fetch dataset
-spambase = pandas.read_csv('/Users/xinruiyi/Documents/GitHub/5002-Project/spambase/spambase.data')
+spambase = pd.read_csv('/Users/xinruiyi/Documents/GitHub/5002-Project/spambase/spambase.data')
 
-# data (as pandas dataframes)
-X = spambase.data.features
-y = spambase.data.targets
+print(spambase)
 
-# metadata
-print(spambase.metadata)
-
-# variable information
-print(spambase.variables)
