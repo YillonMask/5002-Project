@@ -35,11 +35,11 @@ for file_path in spam_files_path:
 
 print('read spam folder successfully!')
 
-#word_prob_dict, letter_conditional_prob_dict= beye_train()
-word_prob_dict, letter_conditional_prob_dict, spam_tokens, regular_tokens = beyes_train_with_traindatabase('./test database/ham', './test database/spam')
+word_prob_dict, letter_conditional_prob_dict= beye_train()
+#word_prob_dict, letter_conditional_prob_dict, spam_tokens, regular_tokens = beyes_train_with_traindatabase('./test database/ham', './test database/spam')
 
 for email in ham_emails:
-    classssification = beyes_test(word_prob_dict, letter_conditional_prob_dict, email, spam_tokens, regular_tokens)
+    classssification = beyes_test(word_prob_dict, letter_conditional_prob_dict, email)
 
     if classssification == 0:
         TRUE_NEGTIVE += 1
@@ -47,7 +47,7 @@ for email in ham_emails:
         FALSE_POSITIVE += 1
 
 for email in spam_emails:
-    classssification = beyes_test(word_prob_dict, letter_conditional_prob_dict, email, spam_tokens, regular_tokens)
+    classssification = beyes_test(word_prob_dict, letter_conditional_prob_dict, email)
 
     if classssification == 1:
         TRUE_POSITIVE += 1

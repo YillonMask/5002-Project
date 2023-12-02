@@ -194,7 +194,7 @@ def beyes_test(word_prob_dict, letter_conditional_prob_dict, email, spam_tokens,
             if key + ' regular' not in letter_conditional_prob_dict:
                 log_prob_regular += word_prob_dict[key] * (1 / (regular_tokens))
             else:
-                log_prob_spam += word_prob_dict[key] * letter_conditional_prob_dict[key + ' regular']
+                log_prob_spam *= word_prob_dict[key] * letter_conditional_prob_dict[key + ' regular']
     
     print(log_prob_spam, log_prob_regular)
     if log_prob_spam > log_prob_regular:
