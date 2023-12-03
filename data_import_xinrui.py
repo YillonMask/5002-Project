@@ -15,11 +15,15 @@ spambase.iloc[:, 0:54] = np.where(spambase.iloc[:, 0:54] > 0, 1, spambase.iloc[:
 
 # Split top 1813 rows into 20% test data and 80% training data
 top_data = spambase.iloc[:1813, :]
-top_train, top_test = train_test_split(top_data, test_size=0.2, random_state=42)
+top_train, top_test = train_test_split(
+    top_data, test_size=0.05, train_size=0.95, random_state=42
+)
 
 # Split the rest of the rows into 20% test data and 80% training data
 rest_data = spambase.iloc[1813:, :]
-rest_train, rest_test = train_test_split(rest_data, test_size=0.2, random_state=42)
+rest_train, rest_test = train_test_split(
+    rest_data, test_size=0.05, train_size=0.95, random_state=42
+)
 
 # Calculate column average for the first 54 columns in top_train
 column_avg_top = top_train.iloc[:, 0:54].mean()
@@ -62,33 +66,40 @@ print("Probability of Ham Emails in Training Data:", ham_probability)
 spam_product = spam_probability
 ham_product = ham_probability
 true_positive = 0
-true_negtive = 0
+true_negative = 0
 false_positive = 0
-false_negtive = 0
-for word in top_test.iloc[:, 0:54]:
-    if top_test[word].values[0] == 1:
-        spam_product *= column_avg_top[word]
-        ham_product *= column_avg_rest[word]
+false_negative = 0
+
+# test top_test data
+
+for index, row in top_test.iterrows():
+    for word in top_test.columns[:54]:
+        if row[word] == 1:
+            ham_product *= column_avg_rest[word]
+            spam_product *= column_avg_top[word]
     if spam_product > ham_product:
         true_positive += 1
     else:
-        false_positive += 1
-for word in rest_test.iloc[:, 0:54]:
-    if rest_test[word].values[0] == 1:
-        ham_product *= column_avg_rest[word]
-        spam_product *= column_avg_top[word]
+        false_negative += 1
+
+# test rest_test data
+for index, row in rest_test.iterrows():
+    for word in rest_test.columns[:54]:
+        if row[word] == 1:
+            ham_product *= column_avg_rest[word]
+            spam_product *= column_avg_top[word]
     if spam_product > ham_product:
         false_positive += 1
     else:
-        false_negtive += 1
+        true_negative += 1
 
 # calculate the accuracy
-accuracy = (true_positive + true_negtive) / (
-    true_positive + true_negtive + false_positive + false_negtive
+accuracy = (true_positive + true_negative) / (
+    true_positive + true_negative + false_positive + false_negative
 )
 
-print(f"ture positive: {true_positive}")
-print(f"ture negtive: {true_negtive}")
+print(f"true positive: {true_positive}")
+print(f"true negative: {true_negative}")
 print(f"false positive: {false_positive}")
-print(f"false negtive: {false_negtive}")
+print(f"false negative: {false_negative}")
 print("Accuracy:", accuracy)
