@@ -8,9 +8,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 # fetch dataset
-spambase = pd.read_csv(
-    "/Users/xinruiyi/Documents/GitHub/5002-Project/spambase/spambase.data", header=None
-)
+spambase = pd.read_csv("./spambase/spambase.data", header=None)
 
 # Change values greater than 0 to 1 in columns 0 to 53
 spambase.iloc[:, 0:54] = np.where(spambase.iloc[:, 0:54] > 0, 1, spambase.iloc[:, 0:54])
@@ -44,3 +42,53 @@ column_avg_combined.columns = ["Spam", "Ham"]
 # Print the combined table
 print("Combined Column Averages for the First 54 Columns:")
 print(column_avg_combined)
+
+# calculate the probability of spam emails in the training data
+spam_probability = len(top_train[top_train[57] == 1]) / (
+    len(top_train) + len(rest_train)
+)
+print("Probability of Spam Emails in Training Data:", spam_probability)
+
+# calculate the probability of ham emails in the training data
+ham_probability = len(rest_train[rest_train[57] == 0]) / (
+    len(top_train) + len(rest_train)
+)
+print("Probability of Ham Emails in Training Data:", ham_probability)
+
+
+# test the model
+# for email in test data, calculate the probability of being spam
+# Multiply the probability of spam for all words with value 1 in the test data
+spam_product = spam_probability
+ham_product = ham_probability
+true_positive = 0
+true_negtive = 0
+false_positive = 0
+false_negtive = 0
+for word in top_test.iloc[:, 0:54]:
+    if top_test[word].values[0] == 1:
+        spam_product *= column_avg_top[word]
+        ham_product *= column_avg_rest[word]
+    if spam_product > ham_product:
+        true_positive += 1
+    else:
+        false_positive += 1
+for word in rest_test.iloc[:, 0:54]:
+    if rest_test[word].values[0] == 1:
+        ham_product *= column_avg_rest[word]
+        spam_product *= column_avg_top[word]
+    if spam_product > ham_product:
+        false_positive += 1
+    else:
+        false_negtive += 1
+
+# calculate the accuracy
+accuracy = (true_positive + true_negtive) / (
+    true_positive + true_negtive + false_positive + false_negtive
+)
+
+print(f"ture positive: {true_positive}")
+print(f"ture negtive: {true_negtive}")
+print(f"false positive: {false_positive}")
+print(f"false negtive: {false_negtive}")
+print("Accuracy:", accuracy)
