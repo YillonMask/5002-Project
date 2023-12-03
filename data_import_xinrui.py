@@ -27,14 +27,14 @@ rest_train, rest_test = train_test_split(rest_data, test_size=0.2, random_state=
 column_avg_top = top_train.iloc[:, 0:54].mean()
 
 # Print the column average
-print("Column Average for the First 54 Columns in Top Train Data:")
+print("Column Average for the First 54 Columns in Top Train Data (Spam):")
 print(column_avg_top)
 
 # Calculate column average for the first 54 columns in top_train
 column_avg_rest = rest_train.iloc[:, 0:54].mean()
 
 # Print the column average
-print("Column Average for the First 54 Columns in Rest Train Data:")
+print("Column Average for the First 54 Columns in Rest Train Data (Ham):")
 print(column_avg_rest)
 
 # Combine column_avg_top and column_avg_rest into one table
