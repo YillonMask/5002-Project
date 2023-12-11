@@ -16,36 +16,36 @@ spambase.iloc[:, 0:54] = np.where(spambase.iloc[:, 0:54] > 0, 1, spambase.iloc[:
 # Split top 1813 rows into 20% test data and 80% training data
 top_data = spambase.iloc[:1813, :]
 top_train, top_test = train_test_split(
-    top_data, test_size=0.05, train_size=0.95, random_state=42
+    top_data, test_size=0.1, train_size=0.9, random_state=42
 )
 
 # Split the rest of the rows into 20% test data and 80% training data
 rest_data = spambase.iloc[1813:, :]
 rest_train, rest_test = train_test_split(
-    rest_data, test_size=0.05, train_size=0.95, random_state=42
+    rest_data, test_size=0.1, train_size=0.9, random_state=42
 )
 
 # Calculate column average for the first 54 columns in top_train
 column_avg_top = top_train.iloc[:, 0:54].mean()
 
 # Print the column average
-print("Column Average for the First 54 Columns in Top Train Data (Spam):")
-print(column_avg_top)
+# print("Column Average for the First 54 Columns in Top Train Data (Spam):")
+# print(column_avg_top)
 
 # Calculate column average for the first 54 columns in top_train
 column_avg_rest = rest_train.iloc[:, 0:54].mean()
 
 # Print the column average
-print("Column Average for the First 54 Columns in Rest Train Data (Ham):")
-print(column_avg_rest)
+# print("Column Average for the First 54 Columns in Rest Train Data (Ham):")
+# print(column_avg_rest)
 
 # Combine column_avg_top and column_avg_rest into one table
 column_avg_combined = pd.concat([column_avg_top, column_avg_rest], axis=1)
 column_avg_combined.columns = ["Spam", "Ham"]
 
 # Print the combined table
-print("Combined Column Averages for the First 54 Columns:")
-print(column_avg_combined)
+# print("Combined Column Averages for the First 54 Columns:")
+# print(column_avg_combined)
 
 # calculate the probability of spam emails in the training data
 spam_probability = len(top_train[top_train[57] == 1]) / (
@@ -98,8 +98,11 @@ accuracy = (true_positive + true_negative) / (
     true_positive + true_negative + false_positive + false_negative
 )
 
+precision = true_positive / (true_positive + false_positive)
+
 print(f"true positive: {true_positive}")
 print(f"true negative: {true_negative}")
 print(f"false positive: {false_positive}")
 print(f"false negative: {false_negative}")
 print("Accuracy:", accuracy)
+print("Precision:", precision)
