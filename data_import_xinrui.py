@@ -29,23 +29,23 @@ rest_train, rest_test = train_test_split(
 column_avg_top = top_train.iloc[:, 0:54].mean()
 
 # Print the column average
-# print("Column Average for the First 54 Columns in Top Train Data (Spam):")
-# print(column_avg_top)
+print("Column Average for the First 54 Columns in Top Train Data (Spam):")
+print(column_avg_top)
 
 # Calculate column average for the first 54 columns in top_train
 column_avg_rest = rest_train.iloc[:, 0:54].mean()
 
 # Print the column average
-# print("Column Average for the First 54 Columns in Rest Train Data (Ham):")
-# print(column_avg_rest)
+print("Column Average for the First 54 Columns in Rest Train Data (Ham):")
+print(column_avg_rest)
 
 # Combine column_avg_top and column_avg_rest into one table
 column_avg_combined = pd.concat([column_avg_top, column_avg_rest], axis=1)
 column_avg_combined.columns = ["Spam", "Ham"]
 
 # Print the combined table
-# print("Combined Column Averages for the First 54 Columns:")
-# print(column_avg_combined)
+print("Combined Column Averages for the First 54 Columns:")
+print(column_avg_combined)
 
 # calculate the probability of spam emails in the training data
 spam_probability = len(top_train[top_train[57] == 1]) / (
